@@ -67,7 +67,7 @@ void sendMessage() {
   Serial.println(msg);
   
   // send message every second
-  taskSendMessage.setInterval(random( TASK_SECOND * 1, TASK_SECOND * 1 ));
+  taskSendMessage.setInterval(random(TASK_SECOND * 1, TASK_SECOND * 1 ));
 }
 
 void initmpu() {
@@ -87,7 +87,7 @@ void initmpu() {
   // 2. MPU6050_RANGE_4_G
   // 3. MPU6050_RANGE_8_G
   // 4. MPU6050_RANGE_16_G
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
 
   // set gyroscope measurement range
   // options are
@@ -95,7 +95,7 @@ void initmpu() {
   // 2. MPU6050_RANGE_500_DEG
   // 3. MPU6050_RANGE_1000_DEG
   // 4. MPU6050_RANGE_2000_DEG
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  mpu.setGyroRange(MPU6050_RANGE_2000_DEG);
 
   // set filter bandwitdth
   // options are
@@ -114,10 +114,15 @@ void receivedCallback( uint32_t from, String &msg ) {
   JSONVar readingsObj = JSON.parse(msg.c_str());
   
   int node = readingsObj["node"];
-  double XAXIS  = readingsObj["XAXIS"];
-  double YAXIS = readingsObj["YAXIS"];
-  double ZAXIS = readingsObj["ZAXIS"];
+  String sXAXIS  = readingsObj["XAXIS"];
+  String sYAXIS = readingsObj["YAXIS"];
+  String sZAXIS = readingsObj["ZAXIS"];
 
+  double XAXIS = sXAXIS.toDouble();
+  double YAXIS = sYAXIS.toDouble();
+  double ZAXIS = sZAXIS.toDouble();
+
+  /*  
   Serial.print("Node: ");
   Serial.println(node);
   Serial.print("X: ");
@@ -126,6 +131,7 @@ void receivedCallback( uint32_t from, String &msg ) {
   Serial.println(YAXIS);
   Serial.print("Z: ");
   Serial.println(ZAXIS);
+  */
 }
 
 void newConnectionCallback(uint32_t nodeId) {

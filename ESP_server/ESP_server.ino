@@ -37,7 +37,7 @@ String getReadings();
 Task taskSendMessage(TASK_SECOND * 1, TASK_FOREVER, &sendMessage);
 
 void sendMessage() {
-  String msg = "Ciao a tutti";
+  String msg = "Whopper, Whopper, Whopper, Whopper";
   mesh.sendBroadcast(msg);
 
   // send message every second
@@ -58,7 +58,7 @@ double receivedCallback( uint32_t from, String &msg ) {
   double YAXIS = sYAXIS.toDouble();
   double ZAXIS = sZAXIS.toDouble();
 
-  /* debug prints */
+  /*
   Serial.print("Node: ");
   Serial.println(node);
   Serial.print("X: ");
@@ -67,7 +67,7 @@ double receivedCallback( uint32_t from, String &msg ) {
   Serial.println(YAXIS);
   Serial.print("Z: ");
   Serial.println(ZAXIS);
-  /**/
+  */
 
   return XAXIS, YAXIS, ZAXIS;
 }
