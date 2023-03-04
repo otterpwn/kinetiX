@@ -3,7 +3,7 @@
 KinetiX è un progetto che prevede la realizzazione di un braccio meccanico controllato a distanza tramite un accelerometro. L'obiettivo è quello di creare un sistema che permetta di controllare il braccio attraverso il rilevamento dei movimenti del corpo al fine di rendere l'utilizzo intuitivo e naturale.
 
 Il progetto è composto da due parti:
-- Il guanto che ospita l'accelerometro MCU-6050 utilizzato per il riconoscimento dei movimenti e il Node MCU
+- Il guanto che ospita l'accelerometro MCU-6050 utilizzato per il riconoscimento dei movimenti e un Node MCU
 - Il braccio meccanico composto da 3 motori Servo controllati da un Arduino Uno e un Node MCU
 
 Questi due moduli comunicano tra di loro in modo wireless attraverso il protocollo di Mesh Networking.
