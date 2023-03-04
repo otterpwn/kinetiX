@@ -24,7 +24,7 @@ Per compilare e caricare il codice del Client (`ESP_client/ESP_client.ino`) è n
 - Installare la libreria `Arduino_JSON` dal gestore delle librerie interno all'IDE
 - Installare la libreria `Adafruit MPU6050` dal gestore delle librerie interno all'IDE
 
-![ESP_client_bb](ESP_client_bb.png)
+![images/ESP_client_bb.png](ESP_client_bb.png)
 Sul Node MCU i nomi dei pin potrebbero cambiare leggermente rispetto a quelli riportati nell'immagine, in generale:
 
 | Node MCU Immagine | Node MCU Utilizzato |
