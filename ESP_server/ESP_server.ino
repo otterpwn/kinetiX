@@ -1,113 +1,126 @@
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
-#include <Wire.h>
+/*
+  Part of KinetiX project
+  KinetiX ESP Server
+  
+  Author: Riccardo "Cinderz" Miani ʕ •ᴥ•ʔ
+  Licence: 
+*/
 
-Adafruit_MPU6050 mpu;
+// include library for JSON
+#include <Arduino_JSON.h>
+
+// include required libraries for Painless Mesh protocol
+#include <painlessMesh.h>
+
+// initialize scheduler and mesh objects
+Scheduler userScheduler;
+painlessMesh  mesh;
+
+// define strings for readings
+String readings;
+
+// define node number
+int nodeNumber = 2;
+
+// define credentials and port for access point
+#define   MESH_PREFIX     "whateverYouLike"
+#define   MESH_PASSWORD   "somethingSneaky"
+#define   MESH_PORT       5555
+
+// define functions used by mesh
+// functions receivedCallback, newConnectionCallback, newConnectionCallback and nodeTimeAdjustedCallback are required for painless mesh library
+
+// user stubs
+void sendMessage();
+String getReadings();
+
+Task taskSendMessage(TASK_SECOND * 1, TASK_FOREVER, &sendMessage);
+
+void sendMessage() {
+  String msg = "Ciao a tutti";
+  mesh.sendBroadcast(msg);
+
+  // send message every second
+  taskSendMessage.setInterval(random( TASK_SECOND * 1, TASK_SECOND * 1 ));
+}
+
+double receivedCallback( uint32_t from, String &msg ) {
+  Serial.printf("Received from %u msg=%s\n", from, msg.c_str());
+  //JSONVar readingsObj = JSON.parse(msg.c_str());
+  JSONVar readingsObj = JSON.parse(msg);
+
+  int node = readingsObj["node"];
+  String sXAXIS  = readingsObj["XAXIS"];
+  String sYAXIS = readingsObj["YAXIS"];
+  String sZAXIS = readingsObj["ZAXIS"];
+
+  double XAXIS = sXAXIS.toDouble();
+  double YAXIS = sYAXIS.toDouble();
+  double ZAXIS = sZAXIS.toDouble();
+
+  /* debug prints */
+  Serial.print("Node: ");
+  Serial.println(node);
+  Serial.print("X: ");
+  Serial.println(XAXIS);;
+  Serial.print("Y: ");
+  Serial.println(YAXIS);
+  Serial.print("Z: ");
+  Serial.println(ZAXIS);
+  /**/
+
+  return XAXIS, YAXIS, ZAXIS;
+}
+
+void newConnectionCallback(uint32_t nodeId) {
+    Serial.printf("New Connection, nodeId = %u\n", nodeId);
+}
+
+void changedConnectionCallback() {
+  Serial.printf("Changed connections\n");
+}
+
+void nodeTimeAdjustedCallback(int32_t offset) {
+    Serial.printf("Adjusted time %u. Offset = %d\n", mesh.getNodeTime(),offset);
+}
 
 void setup(void) {
+  // initialize serial monitor with baud-rate of 115200
   Serial.begin(115200);
 
+  // delay if serial monitor does not start
   while (!Serial) {
     delay(10);
   }
 
-  Serial.println("Adafruit MPU6050 test!");
+  // set startup messages for mesh
+  // options are
+  // 1. ERROR
+  // 2. MESH_STATUS
+  // 3. CONNECTION
+  // 4. SYNC
+  // 5. COMMUNICATION
+  // 6. GENERAL
+  // 7. MSG_TYPES
+  // 8. REMOTE
+  // 9. STARTUP  
+  mesh.setDebugMsgTypes(ERROR | STARTUP);
 
-  // Try to initialize!
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
-    while (1) {
-      delay(10);
-    }
-  }
-  Serial.println("MPU6050 Found!");
+  // init mesh
+  mesh.init(MESH_PREFIX, MESH_PASSWORD, &userScheduler, MESH_PORT);
 
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  Serial.print("Accelerometer range set to: ");
-  switch (mpu.getAccelerometerRange()) {
-  case MPU6050_RANGE_2_G:
-    Serial.println("+-2G");
-    break;
-  case MPU6050_RANGE_4_G:
-    Serial.println("+-4G");
-    break;
-  case MPU6050_RANGE_8_G:
-    Serial.println("+-8G");
-    break;
-  case MPU6050_RANGE_16_G:
-    Serial.println("+-16G");
-    break;
-  }
+  // define behavior for events
+  mesh.onReceive(&receivedCallback);
+  mesh.onNewConnection(&newConnectionCallback);
+  mesh.onChangedConnections(&changedConnectionCallback);
+  mesh.onNodeTimeAdjusted(&nodeTimeAdjustedCallback);
 
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-  Serial.print("Gyro range set to: ");
-  switch (mpu.getGyroRange()) {
-  case MPU6050_RANGE_250_DEG:
-    Serial.println("+- 250 deg/s");
-    break;
-  case MPU6050_RANGE_500_DEG:
-    Serial.println("+- 500 deg/s");
-    break;
-  case MPU6050_RANGE_1000_DEG:
-    Serial.println("+- 1000 deg/s");
-    break;
-  case MPU6050_RANGE_2000_DEG:
-    Serial.println("+- 2000 deg/s");
-    break;
-  }
-
-  mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
-  Serial.print("Filter bandwidth set to: ");
-  switch (mpu.getFilterBandwidth()) {
-  case MPU6050_BAND_260_HZ:
-    Serial.println("260 Hz");
-    break;
-  case MPU6050_BAND_184_HZ:
-    Serial.println("184 Hz");
-    break;
-  case MPU6050_BAND_94_HZ:
-    Serial.println("94 Hz");
-    break;
-  case MPU6050_BAND_44_HZ:
-    Serial.println("44 Hz");
-    break;
-  case MPU6050_BAND_21_HZ:
-    Serial.println("21 Hz");
-    break;
-  case MPU6050_BAND_10_HZ:
-    Serial.println("10 Hz");
-    break;
-  case MPU6050_BAND_5_HZ:
-    Serial.println("5 Hz");
-    break;
-  }
-
-  Serial.println("");
-  delay(100);
+  // execute task
+  userScheduler.addTask(taskSendMessage);
+  taskSendMessage.enable();
 }
 
 void loop() {
-  /* Get new sensor events with the readings */
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
-
-  /* Print out the values */
-  Serial.print("Acceleration X: ");
-  Serial.print(a.acceleration.x);
-  Serial.print(", Y: ");
-  Serial.print(a.acceleration.y);
-  Serial.print(", Z: ");
-  Serial.print(a.acceleration.z);
-  Serial.println(" m/s^2");
-
-  Serial.print("Rotation X: ");
-  Serial.print(g.gyro.x);
-  Serial.print(", Y: ");
-  Serial.print(g.gyro.y);
-  Serial.print(", Z: ");
-  Serial.print(g.gyro.z);
-  Serial.println(" rad/s");
-  
-  Serial.println("");
-  delay(500);
+  // update mesh
+  mesh.update();
 }
