@@ -1,19 +1,21 @@
+// include required libraries for MPU-6050
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
+// initialize accelerometer
 Adafruit_MPU6050 mpu;
 
 void setup(void) {
+  // initialize serial monitor with baud-rate of 115200
   Serial.begin(115200);
 
+  // delay if serial does not start
   while (!Serial) {
     delay(10);
   }
 
-  Serial.println("Adafruit MPU6050 test!");
-
-  // Try to initialize!
+  // try to initialize accelerometer
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
     while (1) {
@@ -22,7 +24,9 @@ void setup(void) {
   }
   Serial.println("MPU6050 Found!");
 
+  // set accelerometer measurement range
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+
   Serial.print("Accelerometer range set to: ");
   switch (mpu.getAccelerometerRange()) {
   case MPU6050_RANGE_2_G:
@@ -39,6 +43,7 @@ void setup(void) {
     break;
   }
 
+  // set gyroscope measurement range
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
   Serial.print("Gyro range set to: ");
   switch (mpu.getGyroRange()) {
@@ -56,6 +61,7 @@ void setup(void) {
     break;
   }
 
+  // set filter bandwitdth
   mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
   Serial.print("Filter bandwidth set to: ");
   switch (mpu.getFilterBandwidth()) {
@@ -87,11 +93,13 @@ void setup(void) {
 }
 
 void loop() {
-  /* Get new sensor events with the readings */
+  // get accelerometer events
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
 
-  /* Print out the values */
+  // print accelerometer values
+
+  // acceleration
   Serial.print("Acceleration X: ");
   Serial.print(a.acceleration.x);
   Serial.print(", Y: ");
@@ -100,6 +108,7 @@ void loop() {
   Serial.print(a.acceleration.z);
   Serial.println(" m/s^2");
 
+  // rotation
   Serial.print("Rotation X: ");
   Serial.print(g.gyro.x);
   Serial.print(", Y: ");
@@ -107,7 +116,11 @@ void loop() {
   Serial.print(", Z: ");
   Serial.print(g.gyro.z);
   Serial.println(" rad/s");
+
+  // temperature is not used but required for getEvent argc
   
   Serial.println("");
+  
+  // get new reading every 500 milliseconds
   delay(500);
 }
