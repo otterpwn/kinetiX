@@ -10,15 +10,14 @@
 #include <Arduino_JSON.h>
 
 // include required libraries for MPU-6050
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
+#include <MPU6050.h>
 #include <Wire.h>
 
 // include required libraries for Painless Mesh protocol
 #include <painlessMesh.h>
 
 // initialize accelerometer object
-Adafruit_MPU6050 mpu;
+MPU6050 mpu;
 
 // initialize scheduler and mesh objects
 Scheduler userScheduler;
@@ -29,6 +28,16 @@ String readings;
 
 // define node number
 int nodeNumber = 1;
+
+// define variables for max coords calculation
+double maxX = 0;
+double maxY = 0;
+double maxZ = 0;
+
+// define variables for max coords calculation
+double minX = 0;
+double minY = 0;
+double minZ = 0;
 
 // define credentials and port for access point
 #define   MESH_PREFIX     "whateverYouLike"
@@ -42,20 +51,24 @@ int nodeNumber = 1;
 void sendMessage();
 String getReadings();
 
-Task taskSendMessage(TASK_SECOND * 1, TASK_FOREVER, &sendMessage);
+Task taskSendMessage(TASK_SECOND * 0.5, TASK_FOREVER, &sendMessage);
 
 String getReadings() {
   JSONVar jsonReadings;
   
   // get accelerometer events
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
+  int16_t ax, ay, az;
+  int16_t gx, gy, gz;
+
+  mpu.getMotion6(&ax, &ay, &ax, &gx, &gy, &gz);
 
   jsonReadings["node"] = nodeNumber;
-  jsonReadings["XAXIS"] = String(g.gyro.x);
-  jsonReadings["YAXIS"] = String(g.gyro.y);
-  jsonReadings["ZAXIS"] = String(g.gyro.z);
+  jsonReadings["XAXIS"] = String(ax);
+  jsonReadings["YAXIS"] = String(ay);
+  jsonReadings["ZAXIS"] = String(az);
   readings = JSON.stringify(jsonReadings);
+
+  Serial.println(ax);
   
   return readings;
 }
@@ -63,8 +76,6 @@ String getReadings() {
 void sendMessage() {
   String msg = getReadings();
   mesh.sendBroadcast(msg);
-
-  Serial.println(msg);
   
   // send message every second
   taskSendMessage.setInterval(random(TASK_SECOND * 1, TASK_SECOND * 1 ));
@@ -72,14 +83,10 @@ void sendMessage() {
 
 void initmpu() {
   // try to initialize accelerometer
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
-    while (1) {
-      delay(10);
-    }
-  }
+  Wire.begin();
+  mpu.initialize();
 
-  Serial.println("MPU6050 Found!");
+  Serial.println (mpu.testConnection() ? "MPU6050 Found!" : "No MPU6050 Found!"); 
 
   // set accelerometer measurement range
   // options are
@@ -87,7 +94,7 @@ void initmpu() {
   // 2. MPU6050_RANGE_4_G
   // 3. MPU6050_RANGE_8_G
   // 4. MPU6050_RANGE_16_G
-  mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
+  //mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
 
   // set gyroscope measurement range
   // options are
@@ -95,7 +102,7 @@ void initmpu() {
   // 2. MPU6050_RANGE_500_DEG
   // 3. MPU6050_RANGE_1000_DEG
   // 4. MPU6050_RANGE_2000_DEG
-  mpu.setGyroRange(MPU6050_RANGE_2000_DEG);
+  //mpu.setGyroRange(MPU6050_RANGE_2000_DEG);
 
   // set filter bandwitdth
   // options are
@@ -106,7 +113,7 @@ void initmpu() {
   // 5. MPU6050_BAND_21_HZ
   // 6. MPU6050_BAND_10_HZ
   // 7. MPU6050_BAND_5_HZ
-  mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
+  //mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
 }
 
 void receivedCallback( uint32_t from, String &msg ) {
@@ -114,19 +121,19 @@ void receivedCallback( uint32_t from, String &msg ) {
   JSONVar readingsObj = JSON.parse(msg.c_str());
   
   int node = readingsObj["node"];
-  String sXAXIS  = readingsObj["XAXIS"];
+  String sXAXIS = readingsObj["XAXIS"];
   String sYAXIS = readingsObj["YAXIS"];
   String sZAXIS = readingsObj["ZAXIS"];
 
-  double XAXIS = sXAXIS.toDouble();
-  double YAXIS = sYAXIS.toDouble();
-  double ZAXIS = sZAXIS.toDouble();
+  int16_t XAXIS = sXAXIS.toInt();
+  int16_t YAXIS = sYAXIS.toInt();
+  int16_t ZAXIS = sZAXIS.toInt();
 
   /*  
   Serial.print("Node: ");
   Serial.println(node);
   Serial.print("X: ");
-  Serial.println(XAXIS);;
+  Serial.println(XAXIS);
   Serial.print("Y: ");
   Serial.println(YAXIS);
   Serial.print("Z: ");

@@ -22,7 +22,7 @@ Per compilare e caricare il codice del Client (`ESP_client/ESP_client.ino`) è n
 - [Installare pacchetto per compatibilità con ESP8266](https://randomnerdtutorials.com/installing-esp8266-nodemcu-arduino-ide-2-0/)
 - Installare la libreria `Painless Mesh` dal gestore delle librerie interno all'IDE
 - Installare la libreria `Arduino_JSON` dal gestore delle librerie interno all'IDE
-- Installare la libreria `Adafruit MPU6050` dal gestore delle librerie interno all'IDE
+- Installare la libreria `MPU6050` dal gestore delle librerie interno all'IDE
 
 ![ESP_client_bb.png](images/ESP_client_bb.png)
 
