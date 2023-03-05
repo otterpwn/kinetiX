@@ -15,15 +15,7 @@ Il progetto è composto da due parti:
 
 Questi due moduli comunicano tra di loro in modo wireless attraverso il protocollo di Mesh Networking.
 
-## Table of contents
-- [Componenti necessari](#comonenti_neccessari)
-- [KinetiX Client](#kinetix_client)
-- [KinetiX Server](#kinetix_server)
-- [Costruzione del braccio meccanico](#costruzione_del_braccio_meccanico)
-
-<a name="componenti_necessari"/>
 ## Componenti necessari
-</a>
 1. [Node MCU 1](https://www.amazon.it/Diymore-ESP8266-Sviluppo-Compatibile-Micropython/dp/B09Z6T2XS4) (ESP-12E Module) [x2]
 2. [ITC/MPU6050](https://www.amazon.it/MPU-6050-MPU6050-accelerometro-giroscopio-Converter/dp/B07XRK5FHP) Accelerometer [x1]
 3. [Arduino Uno](https://www.amazon.it/Elegoo-ATmega328P-ATMEGA16U2-Compatibile-Microcontrollore/dp/B01MRJR8UF) [x1]
@@ -31,9 +23,7 @@ Questi due moduli comunicano tra di loro in modo wireless attraverso il protocol
 5. Materiali per costruire il braccio
 6. Jumper wires
 
-##<a name="kinetix_client">
-KinetiX Client
-</a>
+## KinetiX Client
 Il Client in questo schema corrisponde all'accelerometro e al relativo Node MCU.
 Per compilare e caricare il codice del Client (`ESP_client/ESP_client.ino`) è necessario installare alcune librerie e Boards nell'IDE di Arduino:
 - [Installare pacchetto per compatibilità con ESP8266](https://randomnerdtutorials.com/installing-esp8266-nodemcu-arduino-ide-2-0/)
@@ -52,15 +42,17 @@ Sul Node MCU i nomi dei pin potrebbero cambiare leggermente rispetto a quelli ri
 |       GPIO5       |         D1          |
 |       GPO4        |         D2          |
 
-<a name="kinetix_server"/>
 ## KinetiX Server
-</a>
 Il server corrisponde al Node MCU che riceve i dati dall'accelerometro.
 Per compilare e caricare il codice del Client (`ESP_server/ESP_server.ino`) è necessario installare alcune librerie e Boards nell'IDE di Arduino:
 - [Installare pacchetto per compatibilità con ESP8266](https://randomnerdtutorials.com/installing-esp8266-nodemcu-arduino-ide-2-0/)
 - Installare la libreria `Painless Mesh` dal gestore delle librerie interno all'IDE
 - Installare la libreria `Arduino_JSON` dal gestore delle librerie interno all'IDE
 
-<a name="costruzione_del_braccio_meccanico"/>
 ## Costruzione del braccio meccanico
-</a>
+
+
+## Alimentare il progetto
+1. USB Mini A: già integrato nel Node MCU e semplice da implementare attraverso una presa di corrente o, al fine di mantenere la mobilità del guanto, un power-bank
+
+2. Batterie AA o AAA: grazie al regolatore di voltaggio intergrato nel Node MCU, si possono utilizzare diverse configurazioni di batterie come 4AAA (~6V) o 3AAA (~4.5V); è possibile alimentare il tutto anche con delle batterie AA ma con una durata minore
