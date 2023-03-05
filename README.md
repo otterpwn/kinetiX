@@ -51,8 +51,3 @@ Per compilare e caricare il codice del Client (`ESP_server/ESP_server.ino`) è n
 
 ## Costruzione del braccio meccanico
 
-
-## Alimentare il progetto
-1. USB Mini A: già integrato nel Node MCU e semplice da implementare attraverso una presa di corrente o, al fine di mantenere la mobilità del guanto, un power-bank
-
-2. Batterie AA o AAA: grazie al regolatore di voltaggio intergrato nel Node MCU, si possono utilizzare diverse configurazioni di batterie come 4AAA (~6V) o 3AAA (~4.5V); è possibile alimentare il tutto anche con delle batterie AA ma con una durata minore
