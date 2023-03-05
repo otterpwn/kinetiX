@@ -1,3 +1,4 @@
+![otter](https://img.shields.io/badge/-%CA%95%20%E2%80%A2%E1%B4%A5%E2%80%A2%CA%94-blueviolet)
 # KinetiX
 ![logo](images/logo.png)
 
