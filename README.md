@@ -40,7 +40,7 @@ Sul Node MCU i nomi dei pin potrebbero cambiare leggermente rispetto a quelli ri
 |        VCC        |        3.3V         |
 |        GND        |         GND         |
 |       GPIO5       |         D1          |
-|       GPO4        |         D2          |
+|       GPIO4        |         D2          |
 
 ## KinetiX Server
 Il server corrisponde al Node MCU che riceve i dati dall'accelerometro.
@@ -50,4 +50,3 @@ Per compilare e caricare il codice del Client (`ESP_server/ESP_server.ino`) è n
 - Installare la libreria `Arduino_JSON` dal gestore delle librerie interno all'IDE
 
 ## Costruzione del braccio meccanico
-
