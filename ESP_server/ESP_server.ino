@@ -12,12 +12,18 @@
 // include required libraries for Painless Mesh protocol
 #include <painlessMesh.h>
 
+// include libraries for servo control
+#include <Servo.h>
+
 // initialize scheduler and mesh objects
 Scheduler userScheduler;
 painlessMesh  mesh;
 
 // define strings for readings
 String readings;
+
+// define servo object
+Servo servoX;
 
 // define node number
 int nodeNumber = 2;
@@ -44,32 +50,39 @@ void sendMessage() {
   taskSendMessage.setInterval(random( TASK_SECOND * 1, TASK_SECOND * 1 ));
 }
 
-double receivedCallback( uint32_t from, String &msg ) {
+void receivedCallback( uint32_t from, String &msg ) {
   Serial.printf("Received from %u msg=%s\n", from, msg.c_str());
   //JSONVar readingsObj = JSON.parse(msg.c_str());
   JSONVar readingsObj = JSON.parse(msg);
 
   int node = readingsObj["node"];
-  String sXAXIS  = readingsObj["XAXIS"];
+  String sXAXIS = readingsObj["XAXIS"];
   String sYAXIS = readingsObj["YAXIS"];
   String sZAXIS = readingsObj["ZAXIS"];
 
-  double XAXIS = sXAXIS.toDouble();
-  double YAXIS = sYAXIS.toDouble();
-  double ZAXIS = sZAXIS.toDouble();
+  int16_t XAXIS = sXAXIS.toInt();
+  int16_t YAXIS = sYAXIS.toInt();
+  int16_t ZAXIS = sZAXIS.toInt();
 
   /*
   Serial.print("Node: ");
   Serial.println(node);
   Serial.print("X: ");
-  Serial.println(XAXIS);;
+  Serial.println(XAXIS);
   Serial.print("Y: ");
   Serial.println(YAXIS);
   Serial.print("Z: ");
   Serial.println(ZAXIS);
   */
 
-  return XAXIS, YAXIS, ZAXIS;
+  // map coord values to servo motion
+  // MPU6050 library gives values in range of [-17000, 17000]
+  XAXIS = map(XAXIS, -17000, 17000, 0, 180);
+
+  Serial.println(XAXIS);
+
+  // write values to servos
+  servoX.write(XAXIS);
 }
 
 void newConnectionCallback(uint32_t nodeId) {
@@ -92,6 +105,12 @@ void setup(void) {
   while (!Serial) {
     delay(10);
   }
+
+  // attach servoX to GPIO5 or D1
+  servoX.attach(5);
+
+  // reset servo position
+  servoX.write(0);
 
   // set startup messages for mesh
   // options are
