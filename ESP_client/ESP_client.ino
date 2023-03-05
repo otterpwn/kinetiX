@@ -29,16 +29,6 @@ String readings;
 // define node number
 int nodeNumber = 1;
 
-// define variables for max coords calculation
-double maxX = 0;
-double maxY = 0;
-double maxZ = 0;
-
-// define variables for max coords calculation
-double minX = 0;
-double minY = 0;
-double minZ = 0;
-
 // define credentials and port for access point
 #define   MESH_PREFIX     "whateverYouLike"
 #define   MESH_PASSWORD   "somethingSneaky"
