@@ -1,4 +1,3 @@
-![otter](https://img.shields.io/badge/-%CA%95%20%E2%80%A2%E1%B4%A5%E2%80%A2%CA%94-blueviolet)
 ![platform](https://img.shields.io/badge/Platform-Arduino-blueviolet)
 ![JSONLibrary](https://img.shields.io/badge/Arduino__JSON-0.2.0-blueviolet)
 ![MPU6050Library](https://img.shields.io/badge/MPU6050-0.6.0-blueviolet)
