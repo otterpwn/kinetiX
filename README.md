@@ -31,8 +31,8 @@ Questi due moduli comunicano tra di loro in modo wireless attraverso il protocol
 5. Materiali per costruire il braccio
 6. Jumper wires
 
-<a name="kinetix_client">
-## KinetiX Client
+##<a name="kinetix_client">
+KinetiX Client
 </a>
 Il Client in questo schema corrisponde all'accelerometro e al relativo Node MCU.
 Per compilare e caricare il codice del Client (`ESP_client/ESP_client.ino`) è necessario installare alcune librerie e Boards nell'IDE di Arduino:
