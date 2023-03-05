@@ -1,5 +1,5 @@
-![logo](images/logo.png)
 # KinetiX
+![logo](images/logo.png)
 
 KinetiX è un progetto che prevede la realizzazione di un braccio meccanico controllato a distanza tramite un accelerometro. L'obiettivo è quello di creare un sistema che permetta di controllare il braccio attraverso il rilevamento dei movimenti del corpo al fine di rendere l'utilizzo intuitivo e naturale.
 
