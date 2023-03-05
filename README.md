@@ -3,6 +3,7 @@
 ![JSONLibrary](https://img.shields.io/badge/Arduino__JSON-0.2.0-blueviolet)
 ![MPU6050Library](https://img.shields.io/badge/MPU6050-0.6.0-blueviolet)
 ![painlessMeshLibrary](https://img.shields.io/badge/Painless%20Mesh-1.5.0-blueviolet)
+![ESP8266Board](https://img.shields.io/badge/ESP8266-3.1.1-blueviolet)
 
 # KinetiX
 ![logo](images/logo.png)
