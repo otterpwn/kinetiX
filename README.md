@@ -23,6 +23,7 @@ Questi due moduli comunicano tra di loro in modo wireless attraverso il protocol
 
 <a name="componenti_necessari"/>
 ## Componenti necessari
+</a>
 1. [Node MCU 1](https://www.amazon.it/Diymore-ESP8266-Sviluppo-Compatibile-Micropython/dp/B09Z6T2XS4) (ESP-12E Module) [x2]
 2. [ITC/MPU6050](https://www.amazon.it/MPU-6050-MPU6050-accelerometro-giroscopio-Converter/dp/B07XRK5FHP) Accelerometer [x1]
 3. [Arduino Uno](https://www.amazon.it/Elegoo-ATmega328P-ATMEGA16U2-Compatibile-Microcontrollore/dp/B01MRJR8UF) [x1]
@@ -30,8 +31,9 @@ Questi due moduli comunicano tra di loro in modo wireless attraverso il protocol
 5. Materiali per costruire il braccio
 6. Jumper wires
 
-<a name="kinetix_client"/>
+<a name="kinetix_client">
 ## KinetiX Client
+</a>
 Il Client in questo schema corrisponde all'accelerometro e al relativo Node MCU.
 Per compilare e caricare il codice del Client (`ESP_client/ESP_client.ino`) è necessario installare alcune librerie e Boards nell'IDE di Arduino:
 - [Installare pacchetto per compatibilità con ESP8266](https://randomnerdtutorials.com/installing-esp8266-nodemcu-arduino-ide-2-0/)
@@ -52,6 +54,7 @@ Sul Node MCU i nomi dei pin potrebbero cambiare leggermente rispetto a quelli ri
 
 <a name="kinetix_server"/>
 ## KinetiX Server
+</a>
 Il server corrisponde al Node MCU che riceve i dati dall'accelerometro.
 Per compilare e caricare il codice del Client (`ESP_server/ESP_server.ino`) è necessario installare alcune librerie e Boards nell'IDE di Arduino:
 - [Installare pacchetto per compatibilità con ESP8266](https://randomnerdtutorials.com/installing-esp8266-nodemcu-arduino-ide-2-0/)
@@ -60,3 +63,4 @@ Per compilare e caricare il codice del Client (`ESP_server/ESP_server.ino`) è n
 
 <a name="costruzione_del_braccio_meccanico"/>
 ## Costruzione del braccio meccanico
+</a>
