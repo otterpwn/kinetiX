@@ -1,4 +1,5 @@
 ![otter](https://img.shields.io/badge/-%CA%95%20%E2%80%A2%E1%B4%A5%E2%80%A2%CA%94-blueviolet)
+![platform](https://img.shields.io/badge/Platform-Arduino-blueviolet)
 # KinetiX
 ![logo](images/logo.png)
 
