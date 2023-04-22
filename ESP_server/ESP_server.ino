@@ -2,7 +2,7 @@
   Part of KinetiX project
   KinetiX ESP Server
   
-  Author: Riccardo "Cinderz" Miani ʕ •ᴥ•ʔ
+  Author: Riccardo "otterSec" Miani ʕ •ᴥ•ʔ
   Licence: 
 */
 
